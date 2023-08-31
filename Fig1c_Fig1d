@@ -1,0 +1,79 @@
+fig, axs=plt.subplots(1,2,figsize=(5, 4))
+subplots_adjust(wspace=0.6)
+
+def pf_plot(df,clr,d,p):
+
+    df_depth=pd.DataFrame(df.index.values,columns=['Depth'],index=range(0,len(df.index)))
+    n=df_depth[df_depth['Depth']==d].index.values[0]
+    x=df.index.values[n:]
+    y=df.mean(axis=1).values[n:]
+    m=y[0]
+
+    def func_powerlaw(x,b):
+        return m*(x/d)**b 
+
+    popt, pcov = curve_fit(func_powerlaw, x, y, maxfev = 10000)
+    print(popt)
+    axs[p].scatter(df.mean(axis=1).values, df.index.values, color=clr, alpha=0.2, s=50)
+    axs[p].scatter(y, x, color=clr, s=50)
+    x_line = arange(min(x), max(x), 1)
+    y_line = func_powerlaw(x_line, *popt)
+    residuals = func_powerlaw(x, *popt) - y
+    ss_res = numpy.sum(residuals**2)
+    ss_tot = numpy.sum((y-numpy.mean(y))**2)
+    r_squared = 1 - (ss_res / ss_tot)
+    print(r_squared)
+    axs[p].plot(y_line, x_line, '--', color=clr)
+    axs[p].invert_yaxis()
+
+def pf_plot2(df,clr,d,axs):
+
+    df_depth=pd.DataFrame(df.index.values,columns=['Depth'],index=range(0,len(df.index)))
+    n=df_depth[df_depth['Depth']==d].index.values[0]
+    x=df.index.values[n:]
+    y=df.sum(axis=1).values[n:]
+    m=y[0]
+
+    def func_powerlaw(x, b):
+        return m*(x/d)**b 
+
+    popt, pcov = curve_fit(func_powerlaw, x, y, maxfev = 10000)
+    print(popt)
+    axs.scatter(df.iloc[:n,:].sum(axis=1).values, df.iloc[:n,:].index.values, color=clr, alpha=0.2, s=50)
+    axs.scatter(y, x, color=clr, s=50)
+    x_line = arange(min(x), max(x), 1)
+    y_line = func_powerlaw(x_line, *popt)
+    residuals = func_powerlaw(x, *popt) - y
+    ss_res = numpy.sum(residuals**2)
+    ss_tot = numpy.sum((y-numpy.mean(y))**2)
+    r_squared = 1 - (ss_res / ss_tot)
+    print(r_squared)
+    axs.plot(y_line, x_line, '--', color=clr)
+    axs.invert_yaxis()
+
+stndev1=[]
+for i in range(0,6):
+    stndev_d=statistics.stdev(df_PIT_LT500D.iloc[2:8,:].iloc[i,:])
+    stndev1.append(stndev_d)
+axs[0].errorbar(df_PIT_LT500D[2:8].mean(axis=1), df_PIT_LT500D[2:8].index.values, xerr=stndev1, fmt='-o',color='salmon', ls='none')
+
+stndev2=[]
+for i in range(0,7):
+    stndev_d=statistics.stdev(df_pf_DeepTrap_HOT.iloc[3:10,:].iloc[i,:])
+    stndev2.append(stndev_d)
+axs[1].errorbar(df_pf_DeepTrap_HOT.iloc[3:10,:].mean(axis=1), df_pf_DeepTrap_HOT.iloc[3:10,:].index.values, xerr=stndev2, fmt='-o',color='cornflowerblue', ls='none')
+
+pf_plot(df_PIT_LT500D[:8],'salmon',75,0)
+pf_plot(df_pf_DeepTrap_HOT.iloc[:10,:],'cornflowerblue',75,1)
+axs[1].set_ylim(0,250)
+axs[0].tick_params(axis='both', which='both', labelsize=13)
+axs[1].tick_params(axis='both', which='both', labelsize=13)
+axs[0].set_ylabel('Depth (m)', fontsize=14)
+axs[1].set_ylabel('Depth (m)', fontsize=14)
+axs[0].set_xticklabels(['0','25%','50%','75%','100%'])
+axs[1].set_xticklabels(['0','25%','50%','75%'])
+axs[0].tick_params(axis='x', which='both', labelrotation=90)
+axs[1].tick_params(axis='x', which='both', labelrotation=90)
+axs[1].invert_yaxis()
+axs[0].margins(x = 0.05, y =0.05)
+axs[1].margins(x = 0.05, y =0.05)
