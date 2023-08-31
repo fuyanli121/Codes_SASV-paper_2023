@@ -1,0 +1,38 @@
+# in python
+
+Depth = [5,   25,   45,   75,  100,  125,  150, 175,  200,  225,  250, 275,  300,  400,  500, 770, 1000, 2000, 3000,  4000]
+
+df_coreASV_num=pd.DataFrame() # the richness of SASVs
+df_coreASV_sum=pd.DataFrame() # the trap relative abundance of SASVs
+df_coreASV_mean=pd.DataFrame() # the water column relative abundance of SASVs
+Core_ASV_list_All={}
+Core_ASV_list_All_oneList_rep=[]
+for a in df_DeepTrap.index.tolist(): # df_DeepTrap: the relative abundance of ASVs in deep traps and the sampling date
+    df_DeepTrap_a=ASV_pct_DeepTrap[ASV_pct_DeepTrap[a]>0] # ASV_pct_DeepTrap: the relative abundance of ASVs in deep traps
+    ASV_list_DeepTrap_a=df_DeepTrap_a.index.tolist()
+    month=df_DeepTrap.loc[a,'Month']
+    df_coreASV_num_a=pd.DataFrame()
+    df_coreASV_sum_a=pd.DataFrame()
+    df_coreASV_mean_a=pd.DataFrame()
+    for b,c in zip(Depth,range(0,len(Depth))):
+        df_watersample_groupbyM_d=df_watersample_groupbyM_AllDepths[c] # df_watersample_groupbyM_AllDepths: the water column relative abundance of ASVs grouped by months 
+        ASV_list_watersample_d=df_watersample_groupbyM_d[df_watersample_groupbyM_d[month]>0].index.tolist()
+        list1_as_set = set(ASV_list_watersample_d)
+        intersection = list1_as_set.intersection(ASV_list_DeepTrap_a)
+        name=str(a)+"_"+str(b)
+        Core_ASV_list_All[name]=list(intersection)
+        Core_ASV_list_All_oneList_rep=Core_ASV_list_All_oneList_rep+list(intersection)
+        df_coreASV_d_num=pd.DataFrame(len(Core_ASV_list_All[name]),index=[b],columns=[a])
+        df_coreASV_num_a=pd.concat([df_coreASV_num_a,df_coreASV_d_num],axis=0)
+        df_coreASV_d_sum=pd.DataFrame(ASV_pct_DeepTrap.loc[Core_ASV_list_All[name],[a]].sum(axis=0),columns=[b]).transpose()
+        df_coreASV_sum_a=pd.concat([df_coreASV_sum_a,df_coreASV_d_sum],axis=0)
+
+        mean=sum(df_watersample_groupbyM_d.loc[Core_ASV_list_All[name],month])
+        df_coreASV_d_mean=pd.DataFrame(mean,columns=[a],index=[b])
+        df_coreASV_mean_a=pd.concat([df_coreASV_mean_a,df_coreASV_d_mean],axis=0)
+
+    df_coreASV_num=pd.concat([df_coreASV_num,df_coreASV_num_a],axis=1)
+    df_coreASV_sum=pd.concat([df_coreASV_sum,df_coreASV_sum_a],axis=1)
+    df_coreASV_mean=pd.concat([df_coreASV_mean,df_coreASV_mean_a],axis=1)
+    
+Core_ASV_list_All_oneList=list(set(Core_ASV_list_All_oneList_rep))
