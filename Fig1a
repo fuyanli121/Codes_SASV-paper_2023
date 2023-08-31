@@ -1,0 +1,22 @@
+df=100*df_coreASV_mean.loc[:,df_DeepTrap.index.tolist()]
+number=1
+size=number*8
+fig, axs = plt.subplots(number, figsize=(15,5))
+heatmap = sns.heatmap(df, cmap='RdBu_r', ax=axs, linewidth=0.5, center=35) # annot=True, fmt=".0f", fmt=".2f"
+xticklabels=['2014-3-27', '', '', '', '', '', '', 
+'', '', '', '', '', '', '2014-9-29', 
+'2014-10-11', '2014-10-23', '2014-11-3', '', '2015-4-20', '', 
+'2015-5-31', '2015-6-10', '2015-6-20', '2015-7-1', '', '', '', 
+'2015-8-10', '2015-8-20', '2015-8-31', '2015-9-10', '', '', '', 
+'', '', '', '2016-6-9', '', '', '', 
+'', '', '', '', '', '', '', 
+'', '', '', '', '', '', '', 
+'', '', '2016-11-20']
+axs.set_xticklabels(df_DeepTrap.Year_Month,fontsize=12)
+#axs.set_xticklabels(xticklabels,fontsize=12)
+axs.set_ylabel('Depth (m)',fontsize=14)
+axs.collections[0].colorbar.set_ticks([10,20,30,40,50,60,70])
+axs.collections[0].colorbar.set_ticklabels(['10%','20%','30%','40%','50%','60%','70%'])
+cax = axs.figure.axes[-1]
+cax.tick_params(labelsize=13)
+plt.yticks(fontsize=13)
