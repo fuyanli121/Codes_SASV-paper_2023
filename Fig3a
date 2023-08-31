@@ -1,0 +1,103 @@
+df_surface=df_watersample_sharedASV_groupbyDepth.loc[:,ASVlist_peak1_surface].transpose()
+df_surface['genus_man']=taxa_man.loc[ASVlist_peak1_surface,'genus_man']
+df_surface_groupbyGenus=df_surface.groupby(['genus_man']).sum()
+TopGenus_list_surface=sort(list(set(df_surface_groupbyGenus.index.tolist()).intersection(TopGenera_list_man)))
+df_surface_groupbyGenus_TopGenus=df_surface_groupbyGenus.loc[TopGenus_list_surface,:].transpose()
+df_surface_groupbyGenus_TopGenus['Other']=df_surface.iloc[:,:-1].sum(axis=0)-df_surface_groupbyGenus_TopGenus.sum(axis=1)
+surface_TopGenus_man=df_TopGenera_list_man_sort.loc[df_surface_groupbyGenus_TopGenus.columns,:].heatmap_label.tolist()
+df_surface_groupbyGenus_TopGenus_t=df_surface_groupbyGenus_TopGenus.transpose()
+df_surface_groupbyGenus_TopGenus_t.index=surface_TopGenus_man
+df_surface_groupbyGenus_TopGenus_t_sort=pd.concat([df_surface_groupbyGenus_TopGenus_t.iloc[:-1,:].sort_index(axis=0),
+                                                   df_surface_groupbyGenus_TopGenus_t.loc[['Other'],:]],axis=0)
+
+df_DCM=df_watersample_sharedASV_groupbyDepth.loc[:,ASVlist_peak1_DCM].transpose()
+df_DCM['genus_man']=taxa_man.loc[ASVlist_peak1_DCM,'genus_man']
+df_DCM_groupbyGenus=df_DCM.groupby(['genus_man']).sum()
+TopGenus_list_DCM=sort(list(set(df_DCM_groupbyGenus.index.tolist()).intersection(TopGenera_list_man)))
+df_DCM_groupbyGenus_TopGenus=df_DCM_groupbyGenus.loc[TopGenus_list_DCM,:].transpose()
+df_DCM_groupbyGenus_TopGenus['Other']=df_DCM.iloc[:,:-1].sum(axis=0)-df_DCM_groupbyGenus_TopGenus.sum(axis=1)
+DCM_TopGenus_man=df_TopGenera_list_man_sort.loc[df_DCM_groupbyGenus_TopGenus.columns,:].heatmap_label.tolist()
+df_DCM_groupbyGenus_TopGenus_t=df_DCM_groupbyGenus_TopGenus.transpose()
+df_DCM_groupbyGenus_TopGenus_t.index=DCM_TopGenus_man
+df_DCM_groupbyGenus_TopGenus_t_sort=pd.concat([df_DCM_groupbyGenus_TopGenus_t.iloc[:-1,:].sort_index(axis=0),
+                                                   df_DCM_groupbyGenus_TopGenus_t.loc[['Other'],:]],axis=0)
+
+df_LowEupho=df_watersample_sharedASV_groupbyDepth.loc[:,ASVlist_peak1_LowEupho].transpose()
+df_LowEupho['genus_man']=taxa_man.loc[ASVlist_peak1_LowEupho,'genus_man']
+df_LowEupho_groupbyGenus=df_LowEupho.groupby(['genus_man']).sum()
+TopGenus_list_LowEupho=sort(list(set(df_LowEupho_groupbyGenus.index.tolist()).intersection(TopGenera_list_man)))
+df_LowEupho_groupbyGenus_TopGenus=df_LowEupho_groupbyGenus.loc[TopGenus_list_LowEupho,:].transpose()
+df_LowEupho_groupbyGenus_TopGenus['Other']=df_LowEupho.iloc[:,:-1].sum(axis=0)-df_LowEupho_groupbyGenus_TopGenus.sum(axis=1)
+LowEupho_TopGenus_man=df_TopGenera_list_man_sort.loc[df_LowEupho_groupbyGenus_TopGenus.columns,:].heatmap_label.tolist()
+df_LowEupho_groupbyGenus_TopGenus_t=df_LowEupho_groupbyGenus_TopGenus.transpose()
+df_LowEupho_groupbyGenus_TopGenus_t.index=LowEupho_TopGenus_man
+df_LowEupho_groupbyGenus_TopGenus_t_sort=pd.concat([df_LowEupho_groupbyGenus_TopGenus_t.iloc[:-1,:].sort_index(axis=0),
+                                                   df_LowEupho_groupbyGenus_TopGenus_t.loc[['Other'],:]],axis=0)
+
+df_Mid=df_watersample_sharedASV_groupbyDepth.loc[:,ASVlist_peak1_Mid].transpose()
+df_Mid['genus_man']=taxa_man.loc[ASVlist_peak1_Mid,'genus_man']
+df_Mid_groupbyGenus=df_Mid.groupby(['genus_man']).sum()
+TopGenus_list_Mid=sort(list(set(df_Mid_groupbyGenus.index.tolist()).intersection(TopGenera_list_man)))
+df_Mid_groupbyGenus_TopGenus=df_Mid_groupbyGenus.loc[TopGenus_list_Mid,:].transpose()
+df_Mid_groupbyGenus_TopGenus['Other']=df_Mid.iloc[:,:-1].sum(axis=0)-df_Mid_groupbyGenus_TopGenus.sum(axis=1)
+Mid_TopGenus_man=df_TopGenera_list_man_sort.loc[df_Mid_groupbyGenus_TopGenus.columns,:].heatmap_label.tolist()
+df_Mid_groupbyGenus_TopGenus_t=df_Mid_groupbyGenus_TopGenus.transpose()
+df_Mid_groupbyGenus_TopGenus_t.index=Mid_TopGenus_man
+df_Mid_groupbyGenus_TopGenus_t_sort=pd.concat([df_Mid_groupbyGenus_TopGenus_t.iloc[:-1,:].sort_index(axis=0),
+                                                   df_Mid_groupbyGenus_TopGenus_t.loc[['Other'],:]],axis=0)
+
+df_Deep=df_watersample_sharedASV_groupbyDepth.loc[:,ASVlist_peak1_Deep].transpose()
+df_Deep['genus_man']=taxa_man.loc[ASVlist_peak1_Deep,'genus_man']
+df_Deep_groupbyGenus=df_Deep.groupby(['genus_man']).sum()
+TopGenus_list_Deep=sort(list(set(df_Deep_groupbyGenus.index.tolist()).intersection(TopGenera_list_man)))
+df_Deep_groupbyGenus_TopGenus=df_Deep_groupbyGenus.loc[TopGenus_list_Deep,:].transpose()
+df_Deep_groupbyGenus_TopGenus['Other']=df_Deep.iloc[:,:-1].sum(axis=0)-df_Deep_groupbyGenus_TopGenus.sum(axis=1)
+Deep_TopGenus_man=df_TopGenera_list_man_sort.loc[df_Deep_groupbyGenus_TopGenus.columns,:].heatmap_label.tolist()
+df_Deep_groupbyGenus_TopGenus_t=df_Deep_groupbyGenus_TopGenus.transpose()
+df_Deep_groupbyGenus_TopGenus_t.index=Deep_TopGenus_man
+df_Deep_groupbyGenus_TopGenus_t_sort=pd.concat([df_Deep_groupbyGenus_TopGenus_t.iloc[:-1,:].sort_index(axis=0),
+                                                   df_Deep_groupbyGenus_TopGenus_t.loc[['Other'],:]],axis=0)
+
+df_Bottom=df_watersample_sharedASV_groupbyDepth.loc[:,ASVlist_peak1_Bottom].transpose()
+df_Bottom['genus_man']=taxa_man.loc[ASVlist_peak1_Bottom,'genus_man']
+df_Bottom_groupbyGenus=df_Bottom.groupby(['genus_man']).sum()
+TopGenus_list_Bottom=sort(list(set(df_Bottom_groupbyGenus.index.tolist()).intersection(TopGenera_list_man)))
+df_Bottom_groupbyGenus_TopGenus=df_Bottom_groupbyGenus.loc[TopGenus_list_Bottom,:].transpose()
+df_Bottom_groupbyGenus_TopGenus['Other']=df_Bottom.iloc[:,:-1].sum(axis=0)-df_Bottom_groupbyGenus_TopGenus.sum(axis=1)
+Bottom_TopGenus_man=df_TopGenera_list_man_sort.loc[df_Bottom_groupbyGenus_TopGenus.columns,:].heatmap_label.tolist()
+df_Bottom_groupbyGenus_TopGenus_t=df_Bottom_groupbyGenus_TopGenus.transpose()
+df_Bottom_groupbyGenus_TopGenus_t.index=Bottom_TopGenus_man
+df_Bottom_groupbyGenus_TopGenus_t_sort=pd.concat([df_Bottom_groupbyGenus_TopGenus_t.iloc[:-1,:].sort_index(axis=0),
+                                                   df_Bottom_groupbyGenus_TopGenus_t.loc[['Other'],:]],axis=0)
+
+df=pd.concat([df_surface_groupbyGenus_TopGenus_t_sort,df_DCM_groupbyGenus_TopGenus_t_sort,df_LowEupho_groupbyGenus_TopGenus_t_sort,
+             df_Mid_groupbyGenus_TopGenus_t_sort,df_Deep_groupbyGenus_TopGenus_t_sort,df_Bottom_groupbyGenus_TopGenus_t_sort],axis=0)
+
+heatmap_genus=df.index.tolist()
+df.index=range(0,len(heatmap_genus))
+
+Counts_per_samples = pd.DataFrame(df.transpose().sum(axis=0), columns=['Sum'])
+df_pct = pd.DataFrame({c:100*df.transpose()[c]/Counts_per_samples.Sum[c] for c in df.transpose().columns})
+
+df_pct.columns=heatmap_genus
+
+fig, axs = plt.subplots(1, figsize=(15,5))
+heatmap = sns.heatmap(df_pct, cmap='RdBu_r', ax=axs, linewidth=0.5, center=10, cbar=False) # annot=True, fmt=".0f", fmt=".2f", cbar=False
+axs.set_ylabel('Depth (m)', fontsize=14)
+xticklabels=['Actino_1_S', 'Alpha_1_S', 'Cyano_1_S', 'Gamma_2_S', 'MGIII_S', 'Proch_S', 'SAR11_1_S', 'SAR11_2', 'SAR406_S', 'Syn_S', 'Other_S', 'Actino_1_D', 'Actino_2_D', 'Cyano_1_D',
+ 'Gamma_1_D', 'Gamma_2_D', 'MGII_D', 'Proch_D', 'SAR324_D', 'SAR406_D', 'Syn_D', 'Other_D', 'Actino_2_LEu', 'MGI_1_LEu', 'SAR202_LEu', 'SAR324_LEu', 'Other_LEu', 'Actino_2_UM', 'Alpha_1_UM',
+  'Gamma_1_UM', 'Gamma_2_UM', 'Gamma_3_UM', 'Gamma_4_UM', 'MGII_UM', 'MGIII_UM', 'MGI_1_UM', 'MGI_2_UM', 'SAR11_2_UM', 'SAR202_UM', 'SAR324_UM', 'SAR406_UM', 'Other_UM', 'Actino_2_LM',
+   'Gamma_1_LM', 'Gamma_3_LM', 'MGII_LM', 'MGIII_LM', 'MGI_2_LM', 'SAR324_LM', 'SAR406_LM', 'Other_LM', 'Actino_2_B', 'Gamma_1_B', 'Gamma_2_B', 'Gamma_3_B', 'MGII_B', 'MGIII_B',
+    'MGI_2_B', 'SAR11_2_B', 'SAR202_B', 'SAR324_B', 'SAR406_B', 'Other_B']
+axs.set_xticklabels(xticklabels)
+axs.tick_params(axis='y', which='major', labelsize=13)
+axs.tick_params(axis='x', which='major', labelsize=13)
+cax = axs.figure.axes[-1]
+cax.tick_params(labelsize=13)
+
+axs.add_patch(Rectangle((0, 0), 11, 4, fill=False, edgecolor='black', lw=2)) # surface
+axs.add_patch(Rectangle((11, 4), 11, 3, fill=False, edgecolor='black', lw=2)) # DCM
+axs.add_patch(Rectangle((11+11,4+3), 5, 2, fill=False, edgecolor='black', lw=2)) # LowEupho
+axs.add_patch(Rectangle((11+11+5, 4+3+2),15, 6, fill=False, edgecolor='black', lw=2)) # Mid
+axs.add_patch(Rectangle((11+11+5+15, 4+3+2+6), 9, 2, fill=False, edgecolor='black', lw=2)) # Deep
+axs.add_patch(Rectangle((11+11+5+15+9, 4+3+2+6+2), 12, 3, fill=False, edgecolor='black', lw=2)) # Bottom
