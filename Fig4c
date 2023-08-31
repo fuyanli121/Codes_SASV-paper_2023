@@ -1,0 +1,45 @@
+df_pf_DeepTrap_part=100*df_coreASV_sum.loc[:,df_DeepTrap.index.tolist()]
+df_pf_DeepTrap_HOT=100*df_coreASV_mean.loc[:,df_DeepTrap.index.tolist()]
+
+fig, axs=plt.subplots(2,2,figsize=(6, 9))
+subplots_adjust(hspace=0.2, wspace=0.6)
+
+def pf_plot(df,clr,d,p,q):
+
+    df_depth=pd.DataFrame(df.index.values,columns=['Depth'],index=range(0,len(df.index)))
+    n=df_depth[df_depth['Depth']==d].index.values[0]
+    x=df.index.values[n:]
+    y=df.mean(axis=1).values[n:]
+    m=y[0]
+
+    def func_powerlaw(x,b):
+        return m*(x/d)**b 
+
+    popt, pcov = curve_fit(func_powerlaw, x, y, maxfev = 10000)
+    print(popt)
+    axs[p,q].scatter(df.mean(axis=1).values, df.index.values, color=clr, alpha=0.2, s=50)
+    #axs[p,q].plot(df.mean(axis=1).values, df.index.values, color=clr)
+    axs[p,q].scatter(y, x, color=clr, s=50)
+    x_line = arange(min(x), max(x), 1)
+    y_line = func_powerlaw(x_line, *popt)
+    residuals = func_powerlaw(x, *popt) - y
+    ss_res = numpy.sum(residuals**2)
+    ss_tot = numpy.sum((y-numpy.mean(y))**2)
+    r_squared = 1 - (ss_res / ss_tot)
+    print(r_squared)
+    axs[p,q].plot(y_line, x_line, '--', color=clr)
+    axs[p,q].set_ylabel('Depth (m)', fontsize=14)
+
+stndev=[]
+for i in range(0,10):
+    stndev_d=statistics.stdev(df_pf_DeepTrap_part.iloc[10:,:].iloc[i,:])
+    stndev.append(stndev_d)
+axs[1,0].errorbar(df_pf_DeepTrap_part.iloc[10:,:].mean(axis=1), df_pf_DeepTrap_part.iloc[10:,:].index.values, xerr=stndev, fmt='-o',color='gray', ls='none')
+
+axs[1,0].invert_yaxis()
+    
+pf_plot(df_pf_DeepTrap_part,'gray',250,1,0)
+axs[1,0].tick_params(axis='both', which='both', labelsize=13)
+axs[1,0].set_xticklabels(['0','20%','40%'])
+axs[1,0].margins(x=0.02,y =0.02)
+axs[1,0].set_yticks(np.arange(0,4001, 500))
