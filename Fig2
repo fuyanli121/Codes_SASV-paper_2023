@@ -1,0 +1,53 @@
+def pf_plot(df,clr,d):
+
+    df_depth=pd.DataFrame(df.index.values,columns=['Depth'],index=range(0,len(df.index)))
+    n=df_depth[df_depth['Depth']==d].index.values[0]
+    x=df.index.values[n:]
+    y=df.mean(axis=1).values[n:]
+    m=y[0]
+
+    def func_powerlaw(x,b):
+        return m*(x/d)**b 
+    
+    popt, pcov = curve_fit(func_powerlaw, x, y, maxfev = 10000)
+    print(popt)
+    x_line = arange(min(x), max(x), 1)
+    y_line = func_powerlaw(x_line, *popt)
+    y_line_norm=y_line/y_line[100-d]
+    residuals = func_powerlaw(x, *popt) - y
+    ss_res = numpy.sum(residuals**2)
+    ss_tot = numpy.sum((y-numpy.mean(y))**2)
+    r_squared = 1 - (ss_res / ss_tot)
+    print(r_squared)
+    axs.plot(y_line_norm, x_line,  color=clr, linewidth = 2)
+    
+fig, axs=plt.subplots(1,figsize=(8, 4)) 
+    
+pf_plot(df_PIT_LT500D[:8],'salmon',75)
+pf_plot(df_pf_DeepTrap_HOT.iloc[:10,:],'cornflowerblue',75)
+
+def func_powerlaw(x, m, b):
+        return m*(x/100)**b
+m=2701.6
+b=-1.81
+x_line = arange(100, 300, 1)
+y_line = func_powerlaw(x_line, m, b)
+y_line_norm=y_line/y_line[0]
+axs.plot(y_line_norm, x_line, color='lightgrey', linewidth = 2)
+
+m=42.66
+b=-0.89
+x_line = arange(100, 300, 1)
+y_line = func_powerlaw(x_line, m, b)
+y_line_norm=y_line/y_line[0]
+axs.plot(y_line_norm, x_line, color='lightgrey', linewidth = 2)
+
+m=158.5
+b=-0.60
+x_line = arange(100, 300, 1)
+y_line = func_powerlaw(x_line, m, b)
+y_line_norm=y_line/y_line[0]
+axs.plot(y_line_norm, x_line, color='lightgrey', linewidth = 2)
+axs.tick_params(axis='both', which='both', labelsize=15)
+axs.set_ylabel('Depth (m)', fontsize=16)
+axs.invert_yaxis()
